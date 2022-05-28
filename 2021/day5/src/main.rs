@@ -56,19 +56,24 @@ impl Diagram {
             // data[i][j] = (i * c + j)
             self.data[i * self.columns + j] += 1;
 
-            if (j, i) >= end {
+            if (j, i) == end {
                 break;
             }
 
-            println!("({i}, {j}) -> {:?}", end);
-            if i < end.1 {
-                i += 1;
+            println!("({j}, {i}) -> {:?}", end);
+            match i.cmp(&end.1) {
+                std::cmp::Ordering::Less => i += 1,
+                std::cmp::Ordering::Equal => {},
+                std::cmp::Ordering::Greater => i -= 1,
             }
-            if j < end.0 {
-                j += 1;
+            
+            match j.cmp(&end.0) {
+                std::cmp::Ordering::Less => j += 1,
+                std::cmp::Ordering::Equal => {},
+                std::cmp::Ordering::Greater => j -= 1,
             }
         }
-        println!("{self}")
+        //println!("{self}")
     }
 
     fn get_overlaps(&self) -> usize {
